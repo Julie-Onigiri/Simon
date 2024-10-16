@@ -1,73 +1,73 @@
-/* eslint-disable indent */
-/**
- * 
- * Code fourni
- */
-
-
-const message = document.getElementById('message');
-  const button =document.getElementById('go'); 
-
 const app = {
-  
   // just a utility var to remember all the colors
-  colors: ['red','green','blue','yellow'],
+  colors: ['orange', 'lightgreen', 'pink', 'lightblue'],
 
   // this var will contain the sequence said by Simon
-  sequence:[],
+  sequence: [],
 
   drawCells: function () {
-    const playground = document.getElementById('playground');
-    for (const color of app.colors) {
-      let cell = document.createElement('div');
-      cell.className = 'cell';
-      cell.id = color;
-      cell.style.backgroundColor = color;
-      playground.appendChild(cell);
-    }
+      const playground = document.getElementById('playground');
+      for (const color of app.colors) {
+          let cell = document.createElement('div');
+          cell.className = 'cell';
+          cell.id = color;
+          cell.style.backgroundColor = color;
+          playground.appendChild(cell);
+      }
   },
 
   bumpCell: function (color) {
-    // let's modify the syle directly
-    document.getElementById(color).style.borderWidth = '45px';
-    // and reset the same style, after a small pause (150 ms)
-    setTimeout( () => {
-      document.getElementById(color).style.borderWidth = '0';
-    }, 150);
-
+      // let's modify the syle directly
+      document.getElementById(color).style.borderWidth = '45px';
+      // and reset the same style, after a small pause (150 ms)
+      setTimeout(() => {
+          document.getElementById(color).style.borderWidth = '0';
+      }, 150);
   },
 
   newGame: function () {
-    // start by reseting the sequence 
-    app.sequence = [];
-    // make it 3 times :
-    for (let index = 0; index < 3; index++) {
-      // get a random number between 0 and 3
-      let random = Math.floor(Math.random()*4);
-      // add the corresponding color to the sequence
-      app.sequence.push( app.colors[random] );
-    }
+      // start by reseting the sequence
+      app.sequence = [];
+      app.indiceJoueur = 0;
+      // make it 3 times :
+      for (let index = 0; index < 3; index++) {
+          // get a random number between 0 and 3
+          let random = Math.floor(Math.random() * 4);
+          // add the corresponding color to the sequence
+          app.sequence.push(app.colors[random]);
+      }
 
-    // start the "Simon Says" sequence
-    app.simonSays(app.sequence);
+      // start the "Simon Says" sequence
+      app.simonSays(app.sequence);
   },
 
   simonSays: function (sequence) {
-    if (sequence && sequence.length) {
-      // after 500ms, bump the first cell
-      setTimeout( app.bumpCell, 500, sequence[0] );
-      // plays the rest of the sequence after a longer pause
-      setTimeout( app.simonSays, 850, sequence.slice(1));
-    }
+      // on stop le timeout tant que Simon parle!
+      app.stopTimeout();
+
+      if (sequence && sequence.length) {
+          app.showMessage('Mémorisez la séquence !');
+          // after 500ms, bump the first cell
+          setTimeout(app.bumpCell, 500, sequence[0]);
+          // plays the rest of the sequence after a longer pause
+          setTimeout(app.simonSays, 850, sequence.slice(1));
+      } else {
+          // toute la séquence a été jouée : on dis au joueur de jouer
+          app.showMessage('Reproduisez la séquence !');
+          // et on lance le timeout !
+          app.startTimeout();
+      }
   },
 
   init: function () {
-    console.log('init');
-    app.drawCells();
+      console.log('init');
+      app.drawCells();
 
-    // listen click on the "go" button
-    document.getElementById('go').addEventListener('click', app.newGame );
+      // listen click on the "go" button
+      document.getElementById('go').addEventListener('click', app.newGame);
+      app.listenClickEvents();
   },
+
 
   /** Fin du code fourni. Après, c'est à toi de jouer! */
   

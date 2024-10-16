@@ -18,7 +18,7 @@ div.cell {
 
 button#go {
   display: block;
-  width: 15vw;
+  width: 20vw;
   font-size: 2em;
   height: 10vh;
   background-color: #ccc;
@@ -30,5 +30,4 @@ button#go {
 div#message {
   text-align: center;
   font-size: 2em;
-  
 }
